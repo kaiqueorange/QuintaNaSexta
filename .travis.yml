@@ -1,11 +1,14 @@
 language: java
-
 jdk:
-  - oraclejdk8
-  - oraclejdk7
-  - openjdk6
-
-install: ant deps
-
+- oraclejdk8
+addons:
+  postgresql: '9.3'
+  sonarqube: true
+sonarqube:
+  branches:
+  - develop
+  - master
 script:
-    - ant test
+- sonar-scanner -X -Dsonar.host.url=https://sonarqube.com -Dsonar.login=$SONAR_TOKEN
+- mvn -e sonar:sonar -Dsonar.login=$SONAR_TOKEN -Dsonar.host.url=https:/sonarqube.com
+- mvn -e -B package

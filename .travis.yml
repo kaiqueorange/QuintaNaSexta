@@ -4,5 +4,6 @@ jdk:
 script:
  - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
  - mvn -e -B clean compile
+ - sonar-scanner -v
  - mvn -e sonar:sonar -Dsonar.login=$SONAR_TOKEN -Dsonar.host.url=https:/sonarqube.com
  - mvn -e -B package

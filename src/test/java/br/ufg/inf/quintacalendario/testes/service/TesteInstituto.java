@@ -53,6 +53,8 @@ public class TesteInstituto {
 		Assert.assertFalse(retorno);
 	}
 	
+	
+	
 	public void limparObjetoEvento(){
 		EventoService eventoService = new EventoService(sessionFactory);
 		List<Evento> eventos = eventoService.listar();

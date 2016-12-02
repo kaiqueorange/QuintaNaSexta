@@ -1,4 +1,7 @@
 language: java
-script: ./mvn sonarqube -Dsonar.login=$SONAR_TOKEN
 jdk:
-- oraclejdk8
+ - oraclejdk8
+ script:
+ - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+ - mvn -e sonar:sonar -Dsonar.login=$SONAR_TOKEN -Dsonar.host.url=https:/sonarqube.com
+ - sonar-scanner -X -Dsonar.host.url=https://sonarqube.com -Dsonar.login=$SONAR_TOKEN

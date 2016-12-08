@@ -19,5 +19,5 @@ script:
  - mvn -e -B clean compile
  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
  - mvn -e sonar:sonar -Dsonar.login=$SONAR_LOGIN -Dsonar.host.url=https:/sonarqube.com
- - sonar-scanner
+ - sonar-scanner -X -Dsonar.host.url=https://sonarqube.com -Dsonar.login=$SONAR_LOGIN
  - mvn -e -B package

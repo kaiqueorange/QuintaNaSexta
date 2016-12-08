@@ -1,8 +1,9 @@
 package br.ufg.inf.quintacalendario.controller;
 
+import org.hibernate.SessionFactory;
+
 import br.ufg.inf.quintacalendario.main.Application;
 import br.ufg.inf.quintacalendario.view.console.TelaUsuarioConsole;
-import org.hibernate.SessionFactory;
 
 
 public class UsuarioController {

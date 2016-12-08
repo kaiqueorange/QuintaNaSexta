@@ -1,10 +1,10 @@
 package br.ufg.inf.quintacalendario.view.console;
 
+import java.io.PrintStream;
+
 import br.ufg.inf.quintacalendario.controller.Usuario;
 import br.ufg.inf.quintacalendario.view.TelaInicial;
 import br.ufg.inf.quintacalendario.view.console.util.EntradaConsole;
-
-import java.io.PrintStream;
 
 
 public class TelaUsuarioConsole extends AbstractTelaCabecalho implements TelaInicial {

@@ -17,6 +17,5 @@ env:
 script:
  - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
  - mvn -e -B clean compile
- - mvn -e sonar.jacoco.reportMissing.force.zero=true
  - mvn -e sonar:sonar -P cobertura -Dsonar.login=$SONAR_LOGIN -Dsonar.host.url=https:/sonarqube.com
  - mvn -e -B package

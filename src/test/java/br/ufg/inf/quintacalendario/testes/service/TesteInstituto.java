@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import br.ufg.inf.quintacalendario.main.Application;
+import br.ufg.inf.quintacalendario.model.Categoria;
 import br.ufg.inf.quintacalendario.model.Evento;
 import br.ufg.inf.quintacalendario.model.Instituto;
 import br.ufg.inf.quintacalendario.service.CategoriaService;
@@ -53,6 +54,92 @@ public class TesteInstituto {
 		Assert.assertFalse(retorno);
 	}
 	
+	@Test
+	public void testeEditarInstituto(){
+		inserirInstituto("INF - Instituto de informatica");
+		
+		InstitutoService service = new InstitutoService(sessionFactory);
+		
+		List<Instituto> institutos = service.listar();
+		Instituto instituto = institutos.get(0);
+		Integer id = Integer.valueOf(String.valueOf(instituto.getId()));
+		
+		service.editar(id, "IME - Instituto de matematica e estatistica");
+		
+		instituto  = service.listarPorId(id);
+		
+		Assert.assertTrue(instituto.getNome().equals("IME - Instituto de matematica e estatistica"));
+	}
+	
+	@Test
+	public void testeListarPorDescricao(){
+		inserirInstituto("INF - Instituto de informatica");
+		inserirInstituto("IME - Instituto de matematica e estatistica");
+		
+		InstitutoService service = new InstitutoService(sessionFactory);
+		List<Instituto> institutos = service.listar("INF");
+		
+		boolean result = institutos.stream().anyMatch(x->x.getNome().equals("INF - Instituto de informatica"));
+		Assert.assertTrue(result);
+	}
+	
+	@Test
+	public void testeListarPorDescricaoComDescricaoInvalida(){
+		inserirInstituto("INF - Instituto de informatica");
+		inserirInstituto("IME - Instituto de matematica e estatistica");
+		
+		InstitutoService service = new InstitutoService(sessionFactory);
+		List<Instituto> institutos = service.listar("FEF - Faculdade de Educação Fisica");
+		
+		Assert.assertTrue(institutos.isEmpty());
+	}
+	
+	
+	@Test
+	public void testeListarPorId(){
+		Integer id = 0;
+		Instituto instituto = null;
+		
+		inserirInstituto("IME - Instituto de matematica e estatistica");
+		
+		InstitutoService service = new InstitutoService(sessionFactory);
+		List<Instituto> institutos = service.listar();
+		
+		if (!institutos.isEmpty()) {
+			instituto = institutos.get(0);
+			id = (int) instituto.getId();
+			instituto = service.listarPorId(id);
+		}
+		Assert.assertTrue(instituto != null);
+	}
+	
+	@Test
+	public void testeRemoverInstituto(){
+		inserirInstituto("IME - Instituto de matematica e estatistica");
+		Instituto instituto = null;
+		Integer id = 0;
+		
+		InstitutoService service = new InstitutoService(sessionFactory);
+		List<Instituto> institutos = service.listar();
+		
+		if (!institutos.isEmpty()) {
+			instituto = institutos.get(0);
+			id = (int) instituto.getId();
+			
+			service.remover(id);
+			Assert.assertTrue(service.listar().isEmpty());
+		}else{
+			Assert.assertTrue(false);
+		}
+	}
+	
+	public void inserirInstituto(String nome){
+		Instituto instituto = new Instituto();
+		instituto.setNome(nome);
+		
+		InstitutoService service = new InstitutoService(sessionFactory);
+		service.salvar(instituto);
+	}
 	
 	
 	public void limparObjetoEvento(){

@@ -1,10 +1,18 @@
 language: java
 jdk:
  - oraclejdk8
- addons:
+addons:
   sonarqube: true
- env:
-  global:
+sonarqube:
+  branches:
+  - "develop"
+  - "master"
+cache:
+  directories:
+  - "$HOME/.m2/repository"
+  - "$HOME/.sonar"
+env:
+ global:
   - secure: Crm1ccHcTtqGpHx04JSOLeWHQEmI0edMLj4xR1lgq71e/+cUt2szgIuWsQdk/wObZHNX883INHIx3yGzoC9mqfo1SPUZEMGCrcfcp+Q6RQlIvO6w2QvHrYT41gmqdLZTvPeM02xdpE5q5CJxGfwAW49mcxEmEarfSX5jA5wtIzMuilH3QLBzDFnejdjaT98Zi5n9ENq5DR+I/L0Y9mzZH8rfxZ0i2CpkkoH7nWXnf+7W+1IXQozgei+iexLDOwWsQbH/UkerRDM3/37YTO0t7Bqf4MOXlH3Ihwz3FQUlxs+Qx/vh5qEeHOBXUIOFMIO70JMZWNEHKHM9hUC9xl2BjuKLYi41BgedmFgBrpvwcUli60m//cLb/7RN0WwODkrgMAdEO0MDlVVAa4vFgRizZp6Co2EC0WLIzV2mqmODAHiy6cZaKXOQNc7EFa+l0To7ZivueMSn0yDXFnMxx7NIwLPaajqvcLLB7/w1BEvlTY8eMcTRDmGV5u/lDLJoT8QTp/yb/nT3D1I/DSb+BdoMHlyr90wlWDfyy+kf6efsvI1/oJ9i0R2wwsxniT0MvQoKH5kUsmDuetXNzHi6SspUNHnOAm6eKC10qYv73sS0H1LZe+V/3Pie4d+tIN7AUa9a+7rPLEJ9/XnmGuzd60UZaivIDsKbD56ybgY8z/kVUAo=
 script:
  - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V

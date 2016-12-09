@@ -17,32 +17,10 @@ public class TelaUsuarioConsole extends AbstractTelaCabecalho implements TelaIni
     }
 
     @Override
-    public void exibaOpcoes() {
+    public void exibaOpcoes() throws Exception {
         exibaCabecalho();
         desenhaOpcoes();
         realizarLogin();
-    }
-
-    private void redirect(Integer opcao) {
-        switch (opcao) {
-            case 1:
-                //Listar usuários cadastrados    
-
-                break;
-            case 2:
-                //Cadastrar um novo usuário   
-                break;
-            case 3:
-                //Remover usuário    
-                break;
-            case 4:
-                //Alterar dados do usuário    
-
-                break;
-            default:
-
-                break;
-        }
     }
 
     @Override
@@ -72,17 +50,18 @@ public class TelaUsuarioConsole extends AbstractTelaCabecalho implements TelaIni
      * com os dados que foram inseridos.
      *
      * @return Objeto usuário com o nome que corresponde ao login e a senha.
+     * @throws Exception 
      */
-    public Usuario realizarLogin() {
+    public Usuario realizarLogin() throws Exception {
         exibaCabecalho();
         Usuario usuarioLogin = new Usuario();
         usuarioLogin.setNome(new EntradaConsole().pergunteString("- Login: \n"));
         usuarioLogin.setSenha(new EntradaConsole().pergunteString("- Senha: "));
-        System.out.println("Opcao em desenvolvimento");
+        System.err.println("Opcao em desenvolvimento");
         return usuarioLogin;
     }
 
-    public Usuario cadastrarUsuario() {
+    public Usuario cadastrarUsuario() throws Exception {
         Usuario novoUsuario = new Usuario();
         novoUsuario.setNome(new EntradaConsole().pergunteString("Novo Login: "));
         novoUsuario.setSenha(new EntradaConsole().pergunteString("Nova Senha: "));
@@ -91,7 +70,7 @@ public class TelaUsuarioConsole extends AbstractTelaCabecalho implements TelaIni
         if (novoUsuario.getSenha().equals(confirmaSenha)) {
             //Salvar no banco
         } else {
-            System.out.println("As senhas não são iguais!\n");
+            System.err.println("As senhas não são iguais!\n");
             cadastrarUsuario();
         }
         return novoUsuario;

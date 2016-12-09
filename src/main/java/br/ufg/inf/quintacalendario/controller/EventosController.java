@@ -24,7 +24,7 @@ public class EventosController {
 	private SessionFactory sessionFactory;
 	
 	public EventosController() {
-		setTela(new TelaEventoConsole(System.out));
+		setTela(new TelaEventoConsole(System.err));
 		setSessionFactory(Application.getInstance().getSessionFactory());
 	}
 	
@@ -45,12 +45,12 @@ public class EventosController {
 			
 			evento.setCategoria(new CategoriaService(getSessionFactory()).listarPorId(codigoCategoria));
 			
-			List<Instituto> institutos = new ArrayList<Instituto>();
+			List<Instituto> institutos = new ArrayList<>();
 			institutos.add(new InstitutoService(getSessionFactory()).listarPorId(codigoInstituto));
 			
 			evento.setInstitutos(institutos);
 			
-			List<Regional> regionais = new ArrayList<Regional>();
+			List<Regional> regionais = new ArrayList<>();
 			regionais.add(new RegionalService(getSessionFactory()).listarPorId(codigoRegional));
 			
 			evento.setRegionais(regionais);
@@ -58,25 +58,25 @@ public class EventosController {
 			EventoService service = new EventoService(getSessionFactory());
 			service.salvar(evento);
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			System.err.println(e.getMessage());
 			return false;
 		}
 		return true;
 	}
 	
-	public void exibaOpcoes() {
+	public void exibaOpcoes() throws Exception {
 		getTela().exibaOpcoes();
 	}
 	
 	public Date converterStringParaDate(String pData){
-		if (pData == null || pData.equals("")) {
+		if (pData == null || "".equals(pData)) {
 			return null;
 		}
 		
 		Date date = null;
 		try {
 			DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-			date = (java.util.Date) formatter.parse(pData);
+			date = formatter.parse(pData);
 		} catch (ParseException e) {
 			// TODO: handle exception
 		}
@@ -120,20 +120,17 @@ public class EventosController {
 	
 	public List<Evento> listarPorInstituto(int codigoInstituto) {
 		EventoService service = new EventoService(getSessionFactory());
-		List<Evento> eventos = service.listarPorInstituto(codigoInstituto);
-		return eventos;
+		return service.listarPorInstituto(codigoInstituto);
 	}
 
 	public List<Evento> listarPorCategoria(int codigoCategoria) {
 		EventoService service = new EventoService(getSessionFactory());
-		List<Evento> eventos = service.listarPorCategoria(codigoCategoria);
-		return eventos;
+		return service.listarPorCategoria(codigoCategoria);
 	}
 
 	public List<Evento> listarPorRegional(int codigoRegional) {
 		EventoService service = new EventoService(getSessionFactory());
-		List<Evento> eventos = service.listarPorRegional(codigoRegional);
-		return eventos;
+		return service.listarPorRegional(codigoRegional);
 	}
 
 	public SessionFactory getSessionFactory() {

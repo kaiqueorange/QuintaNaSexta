@@ -27,13 +27,13 @@ public class Application {
         return sessionFactory;
     }
 
-    private void run() {
-    	TelaInicial telaInicial = new TelaInicialConsole(System.out);
+    private void run() throws Exception {
+    	TelaInicial telaInicial = new TelaInicialConsole(System.err);
         telaInicial.exibaCabecalho();
         telaInicial.exibaOpcoes();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         Application application = Application.getInstance();
         application.run();
     }

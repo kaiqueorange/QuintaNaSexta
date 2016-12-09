@@ -18,14 +18,14 @@ public class TelaInstitutoConsole extends AbstractTelaCabecalho implements TelaI
     }
 
     @Override
-    public void exibaOpcoes() {
+    public void exibaOpcoes() throws Exception {
         exibaCabecalho();
         desenharOpcoesInicial();
-        Integer opcao = getEntradaConsole().pergunteInteiro(desenharOpcoesInicial().toString());
+        Integer opcao = getEntradaConsole().pergunteInteiro(desenharOpcoesInicial());
         redirect(opcao);
     }
 
-    private void redirect(Integer opcao) {
+    private void redirect(Integer opcao) throws Exception {
         switch (opcao) {
             case 1:
                 cadastrar();
@@ -42,7 +42,7 @@ public class TelaInstitutoConsole extends AbstractTelaCabecalho implements TelaI
             case 4:
                 List<Instituto> institutos = pesquisar();
                 if (institutos.isEmpty()) {
-                    System.out.println("Não existem institutos cadastradas");
+                    System.err.println("Não existem institutos cadastradas");
                 } else {
                     printarinstitutos(institutos);
                 }
@@ -53,42 +53,41 @@ public class TelaInstitutoConsole extends AbstractTelaCabecalho implements TelaI
                 exibaOpcoes();
                 break;
             case 6:
-                new TelaInicialConsole(System.out).exibaOpcoes();
+                new TelaInicialConsole(System.err).exibaOpcoes();
                 break;
             case 7:
                 break;
             default:
-                System.out.println("Opção invalida");
+                System.err.println("Opção invalida");
                 exibaOpcoes();
                 break;
         }
     }
 
-    public void remover() {
+    public void remover() throws Exception {
         List<Instituto> institutos = pesquisar();
         if (!institutos.isEmpty()) {
             printarinstitutos(institutos);
             Integer codigo = getEntradaConsole().pergunteInteiro("Digite o codigo da Instituto que deseja remover");
             new InstitutoController().remover(codigo);
-            System.out.println("Instituto removida com sucesso");
+            System.err.println("Instituto removida com sucesso");
         }
     }
 
-    private void pesquisarPorDescricao() {
+    private void pesquisarPorDescricao() throws Exception {
         String descricao = getEntradaConsole().pergunteString("Digite a descrição desejada", true);
         List<Instituto> institutos = new InstitutoController().listar(descricao);
         printarinstitutos(institutos);
     }
 
     private List<Instituto> pesquisar() {
-        List<Instituto> institutos = new InstitutoController().listar();
-        return institutos;
+        return new InstitutoController().listar();
     }
 
-    private void editar() {
+    private void editar() throws Exception {
         List<Instituto> institutos = pesquisar();
         if (institutos.isEmpty()) {
-            System.out.println("Não existem institutos cadastrados para se realizar a alteração.");
+            System.err.println("Não existem institutos cadastrados para se realizar a alteração.");
         } else {
             printarinstitutos(institutos);
             Integer codigo = getEntradaConsole().pergunteInteiro("Digite o codigo da Instituto que deseja editar");
@@ -96,31 +95,31 @@ public class TelaInstitutoConsole extends AbstractTelaCabecalho implements TelaI
             Instituto instituto = new InstitutoController().listarPorId(codigo);
 
             if (instituto == null) {
-                System.out.println("Instituto não encontrado");
+                System.err.println("Instituto não encontrado");
                 editar();
             } else {
-                System.out.println(instituto.getId() + " - " + instituto.getNome());
+                System.err.println(instituto.getId() + " - " + instituto.getNome());
 
                 String nome = getEntradaConsole().pergunteString("Digite o novo nome do Instituto", true);
                 new InstitutoController().editar(codigo, nome);
 
-                System.out.println("Instituto Alterado Com Sucesso");
+                System.err.println("Instituto Alterado Com Sucesso");
             }
         }
     }
 
-    private void cadastrar() {
+    private void cadastrar() throws Exception {
         boolean result = false;
         while (!result) {
             String nome = getEntradaConsole().pergunteString("Digite o nome do Instituto");
             result = new InstitutoController().cadastrar(nome);
         }
 
-        System.out.println("Instituto Cadastrado Com Sucesso");
+        System.err.println("Instituto Cadastrado Com Sucesso");
     }
 
     private void printarinstitutos(List<Instituto> institutos) {
-        institutos.stream().forEach(x -> System.out.println(x.getId() + " - " + x.getNome()));
+        institutos.stream().forEach(instituto -> System.err.println(instituto.getId() + " - " + instituto.getNome()));
     }
 
     @Override

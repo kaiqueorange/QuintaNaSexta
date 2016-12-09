@@ -8,14 +8,12 @@ import br.ufg.inf.quintacalendario.view.console.TelaUsuarioConsole;
 
 public class UsuarioController {
     private TelaUsuarioConsole tela;
-    private SessionFactory sessionFactory;
 
     public UsuarioController() {
-        tela = new TelaUsuarioConsole(System.out);
-        sessionFactory = Application.getInstance().getSessionFactory();
+        tela = new TelaUsuarioConsole(System.err);
     }
 
-    public void exibaOpcoes() {
+    public void exibaOpcoes() throws Exception {
         getTela().exibaOpcoes();
     }
 

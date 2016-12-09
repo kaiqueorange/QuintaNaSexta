@@ -14,20 +14,20 @@ public class CategoriaController {
     private SessionFactory sessionFactory;
 
     public CategoriaController() {
-        tela = new TelaCategoriaConsole(System.out);
+        tela = new TelaCategoriaConsole(System.err);
         sessionFactory = Application.getInstance().getSessionFactory();
     }
 
-    public void exibaOpcoes() {
+    public void exibaOpcoes() throws Exception {
         getTela().exibaOpcoes();
     }
 
     public boolean cadastrar(String nome) {
-        Categoria Categoria = new Categoria();
-        Categoria.setNome(nome);
+        Categoria categoria = new Categoria();
+        categoria.setNome(nome);
 
         CategoriaService service = new CategoriaService(getSessionFactory());
-        return service.salvar(Categoria);
+        return service.salvar(categoria);
     }
 
     public List<Categoria> listar() {
@@ -42,8 +42,7 @@ public class CategoriaController {
 
     public Categoria listarPorId(Integer codigo) {
         CategoriaService service = new CategoriaService(getSessionFactory());
-        Categoria Categoria = service.listarPorId(codigo);
-        return Categoria;
+        return service.listarPorId(codigo);
     }
 
     public void editar(Integer codigo, String nome) {
@@ -51,12 +50,12 @@ public class CategoriaController {
         service.editar(codigo, nome);
     }
 
-    public void remover(Integer codigo) {
+    public void remover(Integer codigo) throws Exception {
         CategoriaService service = new CategoriaService(getSessionFactory());
-        Categoria Categoria = service.listarPorId(codigo);
-        if (Categoria == null) {
-            System.out.println("*******Codigo invalido*******");
-            System.out.println("");
+        Categoria categoria = service.listarPorId(codigo);
+        if (categoria == null) {
+            System.err.println("*******Codigo invalido*******");
+            System.err.println("");
             getTela().remover();
         } else {
             service.remover(codigo);

@@ -18,14 +18,14 @@ public class TelaRegionalConsole extends AbstractTelaCabecalho implements TelaIn
     }
 
     @Override
-    public void exibaOpcoes() {
+    public void exibaOpcoes() throws Exception {
         exibaCabecalho();
         desenharOpcoesInicial();
-        Integer opcao = getEntradaConsole().pergunteInteiro(desenharOpcoesInicial().toString());
+        Integer opcao = getEntradaConsole().pergunteInteiro(desenharOpcoesInicial());
         redirect(opcao);
     }
 
-    private void redirect(Integer opcao) {
+    private void redirect(Integer opcao) throws Exception {
         switch (opcao) {
             case 1:
                 cadastrar();
@@ -42,7 +42,7 @@ public class TelaRegionalConsole extends AbstractTelaCabecalho implements TelaIn
             case 4:
                 List<Regional> regionais = pesquisar();
                 if (regionais.isEmpty()) {
-                    System.out.println("Não existem regionais cadastradas");
+                    System.err.println("Não existem regionais cadastradas");
                 } else {
                     printarRegionais(regionais);
                 }
@@ -58,37 +58,36 @@ public class TelaRegionalConsole extends AbstractTelaCabecalho implements TelaIn
             case 7:
                 break;
             default:
-                System.out.println("Opção invalida");
+                System.err.println("Opção invalida");
                 exibaOpcoes();
                 break;
         }
     }
 
-    public void remover() {
+    public void remover() throws Exception {
         List<Regional> regionais = pesquisar();
         if (!regionais.isEmpty()) {
             printarRegionais(regionais);
             Integer codigo = getEntradaConsole().pergunteInteiro("Digite o codigo da regional que deseja remover");
             new RegionalController().remover(codigo);
-            System.out.println("Regional removida com sucesso");
+            System.err.println("Regional removida com sucesso");
         }
     }
 
-    private void pesquisarPorDescricao() {
+    private void pesquisarPorDescricao() throws Exception {
         String descricao = getEntradaConsole().pergunteString("Digite a descrição desejada", true);
         List<Regional> regionais = new RegionalController().listar(descricao);
         printarRegionais(regionais);
     }
 
     private List<Regional> pesquisar() {
-        List<Regional> regionais = new RegionalController().listar();
-        return regionais;
+        return new RegionalController().listar();
     }
 
-    private void editar() {
+    private void editar() throws Exception {
         List<Regional> regionais = pesquisar();
         if (regionais.isEmpty()) {
-            System.out.println("Não existem regionais cadastradas para se realizar a alteração.");
+            System.err.println("Não existem regionais cadastradas para se realizar a alteração.");
         } else {
             printarRegionais(regionais);
             Integer codigo = getEntradaConsole().pergunteInteiro("Digite o codigo da regional que deseja editar");
@@ -96,27 +95,27 @@ public class TelaRegionalConsole extends AbstractTelaCabecalho implements TelaIn
             Regional regional = new RegionalController().listarPorId(codigo);
 
             if (regional.getNome().isEmpty()) {
-                System.out.println("Regional não encontrada");
+                System.err.println("Regional não encontrada");
                 editar();
             } else {
-                System.out.println(regional.getId() + " - " + regional.getNome());
+                System.err.println(regional.getId() + " - " + regional.getNome());
 
                 String nome = getEntradaConsole().pergunteString("Digite o novo nome da Regional", true);
                 new RegionalController().editar(codigo, nome);
 
-                System.out.println("Regional Alterada Com Sucesso");
+                System.err.println("Regional Alterada Com Sucesso");
             }
         }
     }
 
-    private void cadastrar() {
+    private void cadastrar() throws Exception {
         boolean result = false;
         while (!result) {
             String nome = getEntradaConsole().pergunteString("Digite o nome da regional");
             result = new RegionalController().cadastrar(nome);
         }
 
-        System.out.println("Regional Cadastrada Com Sucesso");
+        System.err.println("Regional Cadastrada Com Sucesso");
     }
 
     private void printarRegionais(List<Regional> regionais) {

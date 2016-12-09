@@ -18,12 +18,11 @@ public class InstitutoRepository extends AbstractRepository<Instituto> {
         StringBuilder jpql = new StringBuilder();
         jpql.append("Select t from instituto t where lower(t.nome) like :descricao");
 
-        Map<String, Object> parametros = new HashMap<String, Object>();
+        Map<String, Object> parametros = new HashMap<>();
 
         parametros.put("descricao", "%" + descricao.toLowerCase() + "%");
 
-        List<Instituto> institutos = select(jpql.toString(), parametros);
-        return institutos;
+        return select(jpql.toString(), parametros);
     }
 
 }

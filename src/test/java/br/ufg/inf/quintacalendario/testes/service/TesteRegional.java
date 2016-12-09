@@ -82,6 +82,34 @@ public class TesteRegional {
 		Assert.assertTrue(regional.getNome().equals("Catalão"));
 	}
 	
+	@Test
+	public void testeRemoverRegional(){
+		inserirRegional("Goiania");
+		Regional regional = null;
+		Integer id = 0;
+		
+		RegionalService service = new RegionalService(sessionFactory);
+		List<Regional> regionais = service.listar();
+		
+		if (!regionais.isEmpty()) {
+			regional = regionais.get(0);
+			id = (int) regional.getId();
+			
+			service.remover(id);
+			Assert.assertTrue(service.listar().isEmpty());
+		}else{
+			Assert.assertTrue(false);
+		}
+	}
+	
+	private void inserirRegional(String nome) {
+		Regional regional = new Regional();
+		regional.setNome(nome);
+		
+		RegionalService service = new RegionalService(sessionFactory);
+		service.salvar(regional);
+	}
+
 	public Regional criarRegional(){
 		Regional regional = new Regional();
 		regional.setNome("Goiania");

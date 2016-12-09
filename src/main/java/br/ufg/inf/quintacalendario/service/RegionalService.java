@@ -32,7 +32,7 @@ public class RegionalService {
 			
 			return true;
 			
-		} catch (Exception e) {
+		} catch (IllegalArgumentException e) {
 			transaction.rollback();
 			session.close();
 			logger.error(e.getMessage());
@@ -54,7 +54,7 @@ public class RegionalService {
 		session.close();
 	}
 	
-	public void validarRegional(Regional regional) throws IllegalArgumentException{
+	public void validarRegional(Regional regional){
 		if (regional.getNome().trim().isEmpty()) {
 			throw new IllegalArgumentException("O nome da regional nao pode ser vazio");
 		}

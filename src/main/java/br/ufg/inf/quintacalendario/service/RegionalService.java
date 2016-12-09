@@ -2,6 +2,7 @@ package br.ufg.inf.quintacalendario.service;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -11,6 +12,7 @@ import br.ufg.inf.quintacalendario.repository.RegionalRepository;
 
 public class RegionalService {
 	private SessionFactory sessionFactory;
+	private static final Logger logger = Logger.getLogger(RegionalService.class);
 	
 	public RegionalService(SessionFactory session) {
 		super();
@@ -33,6 +35,7 @@ public class RegionalService {
 		} catch (Exception e) {
 			transaction.rollback();
 			session.close();
+			logger.error(e.getMessage());
 			return false;
 		}
 	}
@@ -51,7 +54,7 @@ public class RegionalService {
 		session.close();
 	}
 	
-	public void validarRegional(Regional regional) throws Exception{
+	public void validarRegional(Regional regional) throws IllegalArgumentException{
 		if (regional.getNome().trim().isEmpty()) {
 			throw new IllegalArgumentException("O nome da regional nao pode ser vazio");
 		}

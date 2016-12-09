@@ -235,6 +235,14 @@ public class TesteEvento {
 		
 		evento.setInstitutos(institutos);
 		
+		Categoria categoria = pesquisarCategoriaPorDescricao();
+		if (categoria == null) {
+			inserirCategoria();
+			categoria = pesquisarCategoriaPorDescricao();
+		}
+		
+		evento.setCategoria(categoria);
+		
 		return evento;
 	}
 	

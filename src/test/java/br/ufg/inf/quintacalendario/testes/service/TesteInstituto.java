@@ -9,7 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import br.ufg.inf.quintacalendario.main.Application;
-import br.ufg.inf.quintacalendario.model.Categoria;
 import br.ufg.inf.quintacalendario.model.Evento;
 import br.ufg.inf.quintacalendario.model.Instituto;
 import br.ufg.inf.quintacalendario.service.CategoriaService;
@@ -111,6 +110,14 @@ public class TesteInstituto {
 			instituto = service.listarPorId(id);
 		}
 		Assert.assertTrue(instituto != null);
+	}
+	
+	@Test
+	public void testeListarInstituto(){
+		inserirInstituto("IME - Instituto de matematica e estatistica");
+		InstitutoService service = new InstitutoService(sessionFactory);
+		List<Instituto> listar = service.listar();
+		Assert.assertTrue(!listar.isEmpty());
 	}
 	
 	@Test

@@ -2,6 +2,7 @@ package br.ufg.inf.quintacalendario.service;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -12,6 +13,8 @@ import br.ufg.inf.quintacalendario.repository.CategoriaRepository;
 public class CategoriaService {
 	
 	private SessionFactory sessionFactory;
+	
+	private static final Logger logger = Logger.getLogger(CategoriaService.class);
 	
 	public CategoriaService(SessionFactory session) {
 		super();
@@ -32,11 +35,12 @@ public class CategoriaService {
 		} catch (Exception e) {
 			transaction.rollback();
 			session.close();
+			logger.error(e.getMessage());
 			return false;
 		}
 	}
 	
-	public void validarCategoria(Categoria categoria) throws Exception{
+	public void validarCategoria(Categoria categoria) throws IllegalArgumentException{
 		if (categoria.getNome().trim().isEmpty()) {
 			throw new IllegalArgumentException("O nome da categoria nao pode ser vazio");
 		}

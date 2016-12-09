@@ -22,7 +22,7 @@ public class TelaInicialController {
                 new UsuarioController().exibaOpcoes();
                 break;
             case 6:
-            	new TelaInicialConsole(System.err).exibaOpcoes();
+            	new TelaInicialConsole(System.out).exibaOpcoes();
                 break;
             default:
                 break;

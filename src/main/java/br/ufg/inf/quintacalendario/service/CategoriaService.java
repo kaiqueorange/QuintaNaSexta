@@ -32,7 +32,7 @@ public class CategoriaService {
 			session.close();
 			
 			return true;
-		} catch (Exception e) {
+		} catch (IllegalArgumentException e) {
 			transaction.rollback();
 			session.close();
 			logger.error(e.getMessage());
@@ -40,7 +40,7 @@ public class CategoriaService {
 		}
 	}
 	
-	public void validarCategoria(Categoria categoria) throws IllegalArgumentException{
+	public void validarCategoria(Categoria categoria){
 		if (categoria.getNome().trim().isEmpty()) {
 			throw new IllegalArgumentException("O nome da categoria nao pode ser vazio");
 		}

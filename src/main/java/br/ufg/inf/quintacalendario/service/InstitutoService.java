@@ -2,6 +2,7 @@ package br.ufg.inf.quintacalendario.service;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -11,6 +12,7 @@ import br.ufg.inf.quintacalendario.repository.InstitutoRepository;
 
 public class InstitutoService {
 	private SessionFactory sessionFactory;
+	private static final Logger logger = Logger.getLogger(InstitutoService.class);
 	
 	public InstitutoService(SessionFactory session) {
 		super();
@@ -32,6 +34,7 @@ public class InstitutoService {
 		} catch (Exception e) {
 			transaction.rollback();
 			session.close();
+			logger.error(e.getMessage());
 			return false;
 		}
 	}

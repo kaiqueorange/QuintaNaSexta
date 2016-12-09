@@ -1,5 +1,15 @@
 package br.ufg.inf.quintacalendario.controller;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.hibernate.SessionFactory;
+
 import br.ufg.inf.quintacalendario.main.Application;
 import br.ufg.inf.quintacalendario.model.Categoria;
 import br.ufg.inf.quintacalendario.model.Evento;
@@ -10,16 +20,9 @@ import br.ufg.inf.quintacalendario.service.EventoService;
 import br.ufg.inf.quintacalendario.service.InstitutoService;
 import br.ufg.inf.quintacalendario.service.RegionalService;
 import br.ufg.inf.quintacalendario.view.console.TelaEventoConsole;
-import org.hibernate.SessionFactory;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 public class EventosController {
+	private static final Logger logger = Logger.getLogger(EventosController.class);
 	private TelaEventoConsole tela;
 	private SessionFactory sessionFactory;
 	
@@ -58,7 +61,7 @@ public class EventosController {
 			EventoService service = new EventoService(getSessionFactory());
 			service.salvar(evento);
 		} catch (Exception e) {
-			System.err.println(e.getMessage());
+			logger.error(e.getMessage());
 			return false;
 		}
 		return true;
@@ -78,7 +81,7 @@ public class EventosController {
 			DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 			date = formatter.parse(pData);
 		} catch (ParseException e) {
-			// TODO: handle exception
+			logger.error(e.getMessage());
 		}
 		return date;
 	}

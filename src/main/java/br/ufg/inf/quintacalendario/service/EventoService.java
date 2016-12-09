@@ -3,6 +3,7 @@ package br.ufg.inf.quintacalendario.service;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -13,6 +14,7 @@ import br.ufg.inf.quintacalendario.repository.EventoRepository;
 public class EventoService {
 	
 	private SessionFactory sessionFactory;
+	private static final Logger logger = Logger.getLogger(EventoService.class);
 	
 	public EventoService(SessionFactory sessionFactory) {
 		super();
@@ -23,8 +25,6 @@ public class EventoService {
 		Session session = sessionFactory.openSession();
 		Transaction transaction = session.beginTransaction();
 		try {
-			validarEvento(evento);
-			
 			new EventoRepository(session).salvar(evento);
 			transaction.commit();
 			session.close();
@@ -33,7 +33,7 @@ public class EventoService {
 		} catch (Exception e) {
 			transaction.rollback();
 			session.close();
-			System.err.println(e.getMessage());
+			logger.error(e.getMessage());
 			return false;
 		}
 	}
@@ -107,10 +107,6 @@ public class EventoService {
 		evento.getRegionais().clear();
 	}
 	
-	private void validarEvento(Evento evento) {
-		// TODO Criar validacoes de evento
-	}
-
 	public void limparObjeto(Evento evento) {
 		Session session = getSessionFactory().openSession();
 		Transaction transaction = session.beginTransaction();

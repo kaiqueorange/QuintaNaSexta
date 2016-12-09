@@ -79,6 +79,24 @@ public class TesteEvento {
 	}
 	
 	@Test
+	public void testeListarPorDescricao(){
+		EventoService eventoService = new EventoService(sessionFactory);
+		eventoService.salvar(criarEvento());
+		
+		boolean result =  false;
+		String descricao ="Nascimento do menino jesus";
+		
+		List<Evento> eventos = eventoService.listarPorDescricao(descricao);
+		
+		if (!eventos.isEmpty()) {
+			result = eventos.stream().allMatch(x->x.getDescricao().equals(descricao));
+		}
+		
+		Assert.assertTrue(result);
+		
+	}
+	
+	@Test
 	public void testeListarPorCategoria(){
 		boolean eventosListados = false;
 		

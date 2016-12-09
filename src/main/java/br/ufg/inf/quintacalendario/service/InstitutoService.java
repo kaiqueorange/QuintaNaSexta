@@ -31,7 +31,7 @@ public class InstitutoService {
 	        
 	        return true;
         
-		} catch (Exception e) {
+		} catch (IllegalArgumentException e) {
 			transaction.rollback();
 			session.close();
 			logger.error(e.getMessage());

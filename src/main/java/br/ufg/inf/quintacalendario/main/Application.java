@@ -28,7 +28,7 @@ public class Application {
     }
 
     private void run() throws Exception {
-    	TelaInicial telaInicial = new TelaInicialConsole(System.err);
+    	TelaInicial telaInicial = new TelaInicialConsole(System.out);
         telaInicial.exibaCabecalho();
         telaInicial.exibaOpcoes();
     }

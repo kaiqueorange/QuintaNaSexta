@@ -45,6 +45,14 @@ public class TesteCategoria {
 	}
 	
 	@Test
+	public void testeSalvarCategoriaComNomeMenorQueQuatroCaracteres(){
+		Categoria categoria = new Categoria();
+		categoria.setNome("ABC");
+		boolean retorno = new CategoriaService(sessionFactory).salvar(categoria);
+		Assert.assertFalse(retorno);
+	}
+	
+	@Test
 	public void testeSalvarCategoriaComNomeVazio(){
 		Categoria categoria = new Categoria();
 		categoria.setNome("");

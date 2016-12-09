@@ -34,7 +34,6 @@ public class EventosController {
 	public boolean cadastrar(String descricao, String titulo, String dataInicial, String dataFinal, Integer codigoCategoria
 			               , Integer codigoRegional, Integer codigoInstituto) {
 
-		try {
 			Evento evento = new Evento();
 			
 			evento.setDescricao(descricao);
@@ -60,11 +59,8 @@ public class EventosController {
 			
 			EventoService service = new EventoService(getSessionFactory());
 			service.salvar(evento);
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-			return false;
-		}
-		return true;
+			
+			return true;
 	}
 	
 	public void exibaOpcoes() throws Exception {

@@ -55,6 +55,15 @@ public class TesteRegional {
 	}
 	
 	@Test
+	public void testeRegionalComNomeMenorQueQuatroCaracteres(){
+		Regional regional = new Regional();
+		regional.setNome("ABC");
+		
+		boolean retorno = new RegionalService(sessionFactory).salvar(regional);
+		Assert.assertFalse(retorno);
+	}
+	
+	@Test
 	public void testeListarRegionaisPorDescricao(){
 		RegionalService service = new RegionalService(sessionFactory);
 		

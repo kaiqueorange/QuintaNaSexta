@@ -25,12 +25,13 @@ public class EventoService {
 		Session session = sessionFactory.openSession();
 		Transaction transaction = session.beginTransaction();
 		try {
+			
 			new EventoRepository(session).salvar(evento);
 			transaction.commit();
 			session.close();
 			
 			return true;
-		} catch (Exception e) {
+		} catch (IllegalArgumentException e) {
 			transaction.rollback();
 			session.close();
 			logger.error(e.getMessage());

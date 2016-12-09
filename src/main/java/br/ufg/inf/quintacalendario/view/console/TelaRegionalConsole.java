@@ -42,7 +42,7 @@ public class TelaRegionalConsole extends AbstractTelaCabecalho implements TelaIn
             case 4:
                 List<Regional> regionais = pesquisar();
                 if (regionais.isEmpty()) {
-                    System.err.println("Não existem regionais cadastradas");
+                    System.out.println("Não existem regionais cadastradas");
                 } else {
                     printarRegionais(regionais);
                 }
@@ -58,7 +58,7 @@ public class TelaRegionalConsole extends AbstractTelaCabecalho implements TelaIn
             case 7:
                 break;
             default:
-                System.err.println("Opção invalida");
+                System.out.println("Opção invalida");
                 exibaOpcoes();
                 break;
         }
@@ -70,7 +70,7 @@ public class TelaRegionalConsole extends AbstractTelaCabecalho implements TelaIn
             printarRegionais(regionais);
             Integer codigo = getEntradaConsole().pergunteInteiro("Digite o codigo da regional que deseja remover");
             new RegionalController().remover(codigo);
-            System.err.println("Regional removida com sucesso");
+            System.out.println("Regional removida com sucesso");
         }
     }
 
@@ -87,7 +87,7 @@ public class TelaRegionalConsole extends AbstractTelaCabecalho implements TelaIn
     private void editar() throws Exception {
         List<Regional> regionais = pesquisar();
         if (regionais.isEmpty()) {
-            System.err.println("Não existem regionais cadastradas para se realizar a alteração.");
+            System.out.println("Não existem regionais cadastradas para se realizar a alteração.");
         } else {
             printarRegionais(regionais);
             Integer codigo = getEntradaConsole().pergunteInteiro("Digite o codigo da regional que deseja editar");
@@ -95,15 +95,15 @@ public class TelaRegionalConsole extends AbstractTelaCabecalho implements TelaIn
             Regional regional = new RegionalController().listarPorId(codigo);
 
             if (regional.getNome().isEmpty()) {
-                System.err.println("Regional não encontrada");
+                System.out.println("Regional não encontrada");
                 editar();
             } else {
-                System.err.println(regional.getId() + " - " + regional.getNome());
+                System.out.println(regional.getId() + " - " + regional.getNome());
 
                 String nome = getEntradaConsole().pergunteString("Digite o novo nome da Regional", true);
                 new RegionalController().editar(codigo, nome);
 
-                System.err.println("Regional Alterada Com Sucesso");
+                System.out.println("Regional Alterada Com Sucesso");
             }
         }
     }
@@ -115,7 +115,7 @@ public class TelaRegionalConsole extends AbstractTelaCabecalho implements TelaIn
             result = new RegionalController().cadastrar(nome);
         }
 
-        System.err.println("Regional Cadastrada Com Sucesso");
+        System.out.println("Regional Cadastrada Com Sucesso");
     }
 
     private void printarRegionais(List<Regional> regionais) {

@@ -14,7 +14,7 @@ public class CategoriaController {
     private SessionFactory sessionFactory;
 
     public CategoriaController() {
-        tela = new TelaCategoriaConsole(System.err);
+        tela = new TelaCategoriaConsole(System.out);
         sessionFactory = Application.getInstance().getSessionFactory();
     }
 
@@ -54,8 +54,8 @@ public class CategoriaController {
         CategoriaService service = new CategoriaService(getSessionFactory());
         Categoria categoria = service.listarPorId(codigo);
         if (categoria == null) {
-            System.err.println("*******Codigo invalido*******");
-            System.err.println("");
+            System.out.println("*******Codigo invalido*******");
+            System.out.println("");
             getTela().remover();
         } else {
             service.remover(codigo);

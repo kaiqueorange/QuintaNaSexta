@@ -24,7 +24,7 @@ public class AbstractTelaCabecalho implements TelaCabecalho, OutputAware {
     public AbstractTelaCabecalho() {
         this.carregueCabecalho();
     }
-
+    
     @Override
     public void exibaCabecalho() {
         output.println(conteudoCabecalho);

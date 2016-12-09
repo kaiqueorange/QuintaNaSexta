@@ -54,6 +54,14 @@ public class TesteInstituto {
 	}
 	
 	@Test
+	public void testeSalvarInstitutoComNomeMenorQueQuatroCaracteres(){
+		Instituto instituto = new Instituto();
+		instituto.setNome("ABC");
+		boolean retorno = new InstitutoService(sessionFactory).salvar(instituto);
+		Assert.assertFalse(retorno);
+	}
+	
+	@Test
 	public void testeEditarInstituto(){
 		inserirInstituto("INF - Instituto de informatica");
 		

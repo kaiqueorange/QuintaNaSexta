@@ -14,11 +14,11 @@ public class InstitutoController {
     private SessionFactory sessionFactory;
 
     public InstitutoController() {
-        setTela(new TelaInstitutoConsole(System.out));
+        setTela(new TelaInstitutoConsole(System.err));
         setSessionFactory(Application.getInstance().getSessionFactory());
     }
 
-    public void exibaOpcoes() {
+    public void exibaOpcoes() throws Exception {
         getTela().exibaOpcoes();
     }
 
@@ -42,8 +42,7 @@ public class InstitutoController {
 
     public Instituto listarPorId(Integer codigo) {
         InstitutoService service = new InstitutoService(getSessionFactory());
-        Instituto Instituto = service.listarPorId(codigo);
-        return Instituto;
+        return service.listarPorId(codigo);
     }
 
     public void editar(Integer codigo, String nome) {
@@ -51,12 +50,12 @@ public class InstitutoController {
         service.editar(codigo, nome);
     }
 
-    public void remover(Integer codigo) {
+    public void remover(Integer codigo) throws Exception {
         InstitutoService service = new InstitutoService(getSessionFactory());
-        Instituto Instituto = service.listarPorId(codigo);
-        if (Instituto == null) {
-            System.out.println("*******Codigo invalido*******");
-            System.out.println("");
+        Instituto instituto = service.listarPorId(codigo);
+        if (instituto == null) {
+            System.err.println("*******Codigo invalido*******");
+            System.err.println("");
             getTela().remover();
         } else {
             service.remover(codigo);

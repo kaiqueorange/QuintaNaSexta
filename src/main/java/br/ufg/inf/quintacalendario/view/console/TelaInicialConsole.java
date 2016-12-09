@@ -13,11 +13,11 @@ public class TelaInicialConsole extends AbstractTelaCabecalho implements TelaIni
     }
 
     public static void mensagemSaida() {
-        System.out.println(" - Finalizando programa - ");
+        System.err.println(" - Finalizando programa - ");
     }
 
     @Override
-    public void exibaOpcoes() {
+    public void exibaOpcoes() throws Exception {
         exibaCabecalho();
         int opcao = new EntradaConsole().pergunteInteiro(desenharOpcoes());
         new TelaInicialController().redirect(opcao);

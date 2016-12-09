@@ -14,11 +14,11 @@ public class RegionalController {
     private SessionFactory sessionFactory;
 
     public RegionalController() {
-        tela = new TelaRegionalConsole(System.out);
+        tela = new TelaRegionalConsole(System.err);
         sessionFactory = Application.getInstance().getSessionFactory();
     }
 
-    public void exibaOpcoes() {
+    public void exibaOpcoes() throws Exception {
         getTela().exibaOpcoes();
     }
 
@@ -42,8 +42,7 @@ public class RegionalController {
 
     public Regional listarPorId(Integer codigo) {
         RegionalService service = new RegionalService(getSessionFactory());
-        Regional regional = service.listarPorId(codigo);
-        return regional;
+        return service.listarPorId(codigo);
     }
 
     public void editar(Integer codigo, String nome) {
@@ -51,12 +50,12 @@ public class RegionalController {
         service.editar(codigo, nome);
     }
 
-    public void remover(Integer codigo) {
+    public void remover(Integer codigo) throws Exception {
         RegionalService service = new RegionalService(getSessionFactory());
         Regional regional = service.listarPorId(codigo);
         if (regional == null) {
-            System.out.println("*******Codigo invalido*******");
-            System.out.println("");
+            System.err.println("*******Codigo invalido*******");
+            System.err.println("");
             getTela().remover();
         } else {
             service.remover(codigo);

@@ -18,14 +18,14 @@ public class TelaCategoriaConsole extends AbstractTelaCabecalho implements TelaI
     }
 
     @Override
-    public void exibaOpcoes() {
+    public void exibaOpcoes() throws Exception {
         exibaCabecalho();
         desenharOpcoesInicial();
-        Integer opcao = getEntradaConsole().pergunteInteiro(desenharOpcoesInicial().toString());
+        Integer opcao = getEntradaConsole().pergunteInteiro(desenharOpcoesInicial());
         redirect(opcao);
     }
 
-    private void redirect(Integer opcao) {
+    private void redirect(Integer opcao) throws Exception {
         switch (opcao) {
             case 1:
                 cadastrar();
@@ -40,12 +40,7 @@ public class TelaCategoriaConsole extends AbstractTelaCabecalho implements TelaI
                 exibaOpcoes();
                 break;
             case 4:
-                List<Categoria> categorias = pesquisar();
-                if (categorias.isEmpty()) {
-                    System.out.println("Não existem categorias cadastradas");
-                } else {
-                    printarcategorias(categorias);
-                }
+            	busqueCategorias();
                 exibaOpcoes();
                 break;
             case 5:
@@ -58,69 +53,77 @@ public class TelaCategoriaConsole extends AbstractTelaCabecalho implements TelaI
             case 7:
                 break;
             default:
-                System.out.println("Opção invalida");
+                System.err.println("Opção invalida");
                 exibaOpcoes();
                 break;
         }
     }
 
-    public void remover() {
+	private void busqueCategorias() {
+		List<Categoria> categorias = pesquisar();
+		if (categorias.isEmpty()) {
+		    System.err.println("Não existem categorias cadastradas");
+		} else {
+		    printarcategorias(categorias);
+		}
+	}
+
+    public void remover() throws Exception {
         List<Categoria> categorias = pesquisar();
         if (!categorias.isEmpty()) {
             printarcategorias(categorias);
             Integer codigo = getEntradaConsole().pergunteInteiro("Digite o codigo da Categoria que deseja remover");
             new CategoriaController().remover(codigo);
-            System.out.println("Categoria removida com sucesso");
+            System.err.println("Categoria removida com sucesso");
         }
     }
 
-    private void pesquisarPorDescricao() {
+    private void pesquisarPorDescricao() throws Exception {
         String descricao = getEntradaConsole().pergunteString("Digite a descrição desejada", true);
         List<Categoria> categorias = new CategoriaController().listar(descricao);
         printarcategorias(categorias);
     }
 
     private List<Categoria> pesquisar() {
-        List<Categoria> categorias = new CategoriaController().listar();
-        return categorias;
+        return new CategoriaController().listar();
     }
 
-    private void editar() {
+    private void editar() throws Exception {
         List<Categoria> categorias = pesquisar();
         if (categorias.isEmpty()) {
-            System.out.println("Não existem categorias cadastradas para se realizar a alteração.");
+            System.err.println("Não existem categorias cadastradas para se realizar a alteração.");
         } else {
             printarcategorias(categorias);
             Integer codigo = getEntradaConsole().pergunteInteiro("Digite o codigo da Categoria que deseja editar");
 
-            Categoria Categoria = new CategoriaController().listarPorId(codigo);
+            Categoria categoria = new CategoriaController().listarPorId(codigo);
 
-            if (Categoria.getNome().isEmpty()) {
-                System.out.println("Categoria não encontrada");
+            if (categoria.getNome().isEmpty()) {
+                System.err.println("Categoria não encontrada");
                 editar();
             } else {
-                System.out.println(Categoria.getId() + " - " + Categoria.getNome());
+                System.err.println(categoria.getId() + " - " + categoria.getNome());
 
                 String nome = getEntradaConsole().pergunteString("Digite o novo nome da Categoria", true);
                 new CategoriaController().editar(codigo, nome);
 
-                System.out.println("Categoria Alterada Com Sucesso");
+                System.err.println("Categoria Alterada Com Sucesso");
             }
         }
     }
 
-    private void cadastrar() {
+    private void cadastrar() throws Exception {
         boolean result = false;
         while (!result) {
             String nome = getEntradaConsole().pergunteString("Digite o nome da Categoria");
             result = new CategoriaController().cadastrar(nome);
         }
 
-        System.out.println("Categoria Cadastrada Com Sucesso");
+        System.err.println("Categoria Cadastrada Com Sucesso");
     }
 
     private void printarcategorias(List<Categoria> categorias) {
-        categorias.stream().forEach(x -> System.out.println(x.getId() + " - " + x.getNome()));
+        categorias.stream().forEach(categoria -> System.err.println(categoria.getId() + " - " + categoria.getNome()));
     }
 
     @Override

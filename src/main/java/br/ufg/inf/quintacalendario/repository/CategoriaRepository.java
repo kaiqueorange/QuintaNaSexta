@@ -18,10 +18,9 @@ public class CategoriaRepository extends AbstractRepository<Categoria> {
         StringBuilder jpql = new StringBuilder();
         jpql.append("Select t from categoria t where lower(t.nome) like :descricao");
 
-        Map<String, Object> parametros = new HashMap<String, Object>();
+        Map<String, Object> parametros = new HashMap<>();
         parametros.put("descricao", "%" + descricao.toLowerCase() + "%");
 
-        List<Categoria> categorias = select(jpql.toString(), parametros);
-        return categorias;
+        return select(jpql.toString(), parametros);
     }
 }

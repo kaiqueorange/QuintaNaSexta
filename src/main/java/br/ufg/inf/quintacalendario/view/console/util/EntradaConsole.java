@@ -3,7 +3,7 @@ package br.ufg.inf.quintacalendario.view.console.util;
 import java.util.Scanner;
 
 import static java.lang.System.in;
-import static java.lang.System.out;
+import static java.lang.System.err;
 
 /**
  * Classe auxiliar para encapsular a leitura de entrada do usuário no console.
@@ -16,9 +16,10 @@ public class EntradaConsole {
      *
      * @param pergunta O texto da pergutna que deve ser feita
      * @return O número já convertido para Inteiro
+     * @throws Exception 
      * @see Integer#parseInt(String)
      */
-    public Integer pergunteInteiro(String pergunta) {
+    public Integer pergunteInteiro(String pergunta) throws Exception {
         String entradaString = pergunteString(pergunta);
 
         boolean entradaValida = false;
@@ -29,7 +30,7 @@ public class EntradaConsole {
                 entradaInteiro = Integer.parseInt(entradaString);
                 entradaValida = true;
             } catch (NumberFormatException ignored) {
-                out.println("Entrada inválida. Tente novamente");
+                err.println("Entrada inválida. Tente novamente");
                 entradaValida = false;
                 entradaString = pergunteString(pergunta);
             }
@@ -43,9 +44,10 @@ public class EntradaConsole {
      *
      * @param pergunta O texto da pergutna que deve ser feita
      * @return O número já convertido para Double
+     * @throws Exception 
      * @see Double#parseDouble(String)
      */
-    public Double pergunteDouble(String pergunta) {
+    public Double pergunteDouble(String pergunta) throws Exception {
         String entradaString = pergunteString(pergunta);
         boolean entradaValida = false;
         double entradaDouble = 0;
@@ -55,7 +57,7 @@ public class EntradaConsole {
                 entradaDouble = Double.parseDouble(entradaString);
                 entradaValida = true;
             } catch (NumberFormatException ignored) {
-                out.println("Entrada inválida. Tente novamente");
+                err.println("Entrada inválida. Tente novamente");
                 entradaValida = false;
                 entradaString = pergunteString(pergunta);
             }
@@ -70,8 +72,8 @@ public class EntradaConsole {
      * @param pergunta O texto da pergutna que deve ser feita
      * @return O texto que o usuário inseriu
      */
-    public String pergunteString(String pergunta) throws NumberFormatException {
-        out.println(pergunta);
+    public String pergunteString(String pergunta) throws Exception {
+        err.println(pergunta);
         return scanner.nextLine();
     }
 
@@ -82,11 +84,11 @@ public class EntradaConsole {
      * @param obrigarEntrada Flag para indicar se deve bloquear texto em branco
      * @return O texto que o usuário inseriu
      */
-    public String pergunteString(String pergunta, boolean obrigarEntrada) throws NumberFormatException {
+    public String pergunteString(String pergunta, boolean obrigarEntrada) throws Exception {
         String entrada = pergunteString(pergunta);
 
         if (obrigarEntrada) {
-            while (entrada.trim().equals("")) {
+            while ("".equals(entrada.trim())) {
                 entrada = pergunteString(pergunta);
             }
         }

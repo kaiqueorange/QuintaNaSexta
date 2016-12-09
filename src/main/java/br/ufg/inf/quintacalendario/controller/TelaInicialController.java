@@ -4,7 +4,7 @@ import br.ufg.inf.quintacalendario.view.console.TelaInicialConsole;
 
 public class TelaInicialController {
 
-    public void redirect(int opcao) {
+    public void redirect(int opcao) throws Exception {
         switch (opcao) {
             case 1:
                 new EventosController().exibaOpcoes();
@@ -22,9 +22,7 @@ public class TelaInicialController {
                 new UsuarioController().exibaOpcoes();
                 break;
             case 6:
-            	System.out.println("Opção em desenvolvimento");
-            	new TelaInicialConsole(System.out).exibaOpcoes();
-//                 TelaInicialConsole.mensagemSaida();
+            	new TelaInicialConsole(System.err).exibaOpcoes();
                 break;
             default:
                 break;

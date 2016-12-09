@@ -247,7 +247,7 @@ public class TesteEvento {
 	
 	public Categoria pesquisarCategoriaPorDescricao(){
 		CategoriaService categoriaService = new CategoriaService(sessionFactory);
-		List<Categoria> categorias = categoriaService.pesquisarPorDescricao("Feriado");
+		List<Categoria> categorias = categoriaService.listar("Feriado");
 		if (!categorias.isEmpty()) {
 			return categorias.get(0);
 		}

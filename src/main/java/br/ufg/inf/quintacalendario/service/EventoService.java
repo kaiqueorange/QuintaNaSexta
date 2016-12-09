@@ -33,7 +33,7 @@ public class EventoService {
 		} catch (Exception e) {
 			transaction.rollback();
 			session.close();
-			System.out.println(e.getMessage());
+			System.err.println(e.getMessage());
 			return false;
 		}
 	}
@@ -53,8 +53,7 @@ public class EventoService {
 	
 	public List<Evento> listarPorDescricao(String descricao){
 		Session session = sessionFactory.openSession();
-		List<Evento> eventos = new EventoRepository(session).listarPorDescricao(descricao);
-		return eventos;
+		return new EventoRepository(session).listarPorDescricao(descricao);
 	}
 	
 	public Evento listarPorId(long id){

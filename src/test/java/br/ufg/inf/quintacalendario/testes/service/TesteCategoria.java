@@ -52,6 +52,93 @@ public class TesteCategoria {
 		Assert.assertFalse(retorno);
 	}
 	
+	@Test
+	public void testeEditarCategoria(){
+		inserirCategoria("Feriado");
+		
+		CategoriaService service = new CategoriaService(sessionFactory);
+		
+		List<Categoria> categorias = service.listar();
+		Categoria categoria = categorias.get(0);
+		Integer id = Integer.valueOf(String.valueOf(categoria.getId()));
+		
+		service.editar(id, "Recesso Academico");
+		
+		categoria  = service.listarPorId(id);
+		
+		Assert.assertTrue(categoria.getNome().equals("Recesso Academico"));
+	}
+	
+	@Test
+	public void testeListarPorDescricao(){
+		inserirCategoria("Feriado");
+		inserirCategoria("Recesso");
+		
+		CategoriaService service = new CategoriaService(sessionFactory);
+		List<Categoria> categorias = service.listar("Feriado");
+		
+		boolean result = categorias.stream().anyMatch(x->x.getNome().equals("Feriado"));
+		Assert.assertTrue(result);
+	}
+	
+	@Test
+	public void testeListarPorDescricaoComDescricaoInvalida(){
+		inserirCategoria("Feriado");
+		inserirCategoria("Recesso");
+		
+		CategoriaService service = new CategoriaService(sessionFactory);
+		List<Categoria> categorias = service.listar("Greve");
+		
+		Assert.assertTrue(categorias.isEmpty());
+	}
+	
+	
+	@Test
+	public void testeListarPorId(){
+		Integer id = 0;
+		Categoria categoria = null;
+		
+		inserirCategoria("Feriado");
+		
+		CategoriaService service = new CategoriaService(sessionFactory);
+		List<Categoria> categorias = service.listar();
+		
+		if (!categorias.isEmpty()) {
+			categoria = categorias.get(0);
+			id = (int) categoria.getId();
+			categoria = service.listarPorId(id);
+		}
+		Assert.assertTrue(categoria != null);
+	}
+	
+	@Test
+	public void testeRemoverCategoria(){
+		inserirCategoria("Feriado");
+		Categoria categoria = null;
+		Integer id = 0;
+		
+		CategoriaService service = new CategoriaService(sessionFactory);
+		List<Categoria> categorias = service.listar();
+		
+		if (!categorias.isEmpty()) {
+			categoria = categorias.get(0);
+			id = (int) categoria.getId();
+			
+			service.remover(id);
+			Assert.assertTrue(service.listar().isEmpty());
+		}else{
+			Assert.assertTrue(false);
+		}
+	}
+	
+	public void inserirCategoria(String nome){
+		Categoria categoria = new Categoria();
+		categoria.setNome(nome);
+		
+		CategoriaService service = new CategoriaService(sessionFactory);
+		service.salvar(categoria);
+	}
+	
 	public void limparObjetoEvento(){
 		EventoService eventoService = new EventoService(sessionFactory);
 		List<Evento> eventos = eventoService.listar();

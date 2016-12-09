@@ -1,58 +1,82 @@
 package br.ufg.inf.quintacalendario.controller;
 
+import br.ufg.inf.quintacalendario.main.Application;
+import br.ufg.inf.quintacalendario.model.Categoria;
+import br.ufg.inf.quintacalendario.model.Evento;
+import br.ufg.inf.quintacalendario.model.Instituto;
+import br.ufg.inf.quintacalendario.model.Regional;
+import br.ufg.inf.quintacalendario.service.CategoriaService;
+import br.ufg.inf.quintacalendario.service.EventoService;
+import br.ufg.inf.quintacalendario.service.InstitutoService;
+import br.ufg.inf.quintacalendario.service.RegionalService;
+import br.ufg.inf.quintacalendario.view.console.TelaEventoConsole;
+import org.hibernate.SessionFactory;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.hibernate.SessionFactory;
-
-import br.ufg.inf.quintacalendario.main.Application;
-import br.ufg.inf.quintacalendario.model.Evento;
-import br.ufg.inf.quintacalendario.service.EventoService;
-import br.ufg.inf.quintacalendario.view.console.TelaEventoConsole;
-
 public class EventosController {
-	
-	
 	private TelaEventoConsole tela;
 	private SessionFactory sessionFactory;
 	
 	public EventosController() {
-		setTela(new TelaEventoConsole(System.out));
+		setTela(new TelaEventoConsole(System.err));
 		setSessionFactory(Application.getInstance().getSessionFactory());
 	}
 	
-	public void exibaOpcoes() {
-		getTela().exibaOpcoes();
-	}
+	public boolean cadastrar(String descricao, String titulo, String dataInicial, String dataFinal, Integer codigoCategoria
+			               , Integer codigoRegional, Integer codigoInstituto) {
 
-	public void cadastrar(String descricao, String titulo, String dataInicial, String dataFinal) {
-		Evento evento = new Evento();
-		
-		evento.setDescricao(descricao);
-		evento.setTitulo(titulo);
-		
-		Date data = converterStringParaDate(dataInicial);
-		evento.setDataInicial(data);
-		
-		data = converterStringParaDate(dataFinal);
-		evento.setDataFinal(data);
-		
-		EventoService service = new EventoService(getSessionFactory());
-		service.salvar(evento);
+		try {
+			Evento evento = new Evento();
+			
+			evento.setDescricao(descricao);
+			evento.setTitulo(titulo);
+			
+			Date data = converterStringParaDate(dataInicial);
+			evento.setDataInicial(data);
+			
+			data = converterStringParaDate(dataFinal);
+			evento.setDataFinal(data);
+			
+			evento.setCategoria(new CategoriaService(getSessionFactory()).listarPorId(codigoCategoria));
+			
+			List<Instituto> institutos = new ArrayList<>();
+			institutos.add(new InstitutoService(getSessionFactory()).listarPorId(codigoInstituto));
+			
+			evento.setInstitutos(institutos);
+			
+			List<Regional> regionais = new ArrayList<>();
+			regionais.add(new RegionalService(getSessionFactory()).listarPorId(codigoRegional));
+			
+			evento.setRegionais(regionais);
+			
+			EventoService service = new EventoService(getSessionFactory());
+			service.salvar(evento);
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			return false;
+		}
+		return true;
+	}
+	
+	public void exibaOpcoes() throws Exception {
+		getTela().exibaOpcoes();
 	}
 	
 	public Date converterStringParaDate(String pData){
-		if (pData == null || pData.equals("")) {
+		if (pData == null || "".equals(pData)) {
 			return null;
 		}
 		
 		Date date = null;
 		try {
 			DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-			date = (java.util.Date) formatter.parse(pData);
+			date = formatter.parse(pData);
 		} catch (ParseException e) {
 			// TODO: handle exception
 		}
@@ -79,6 +103,36 @@ public class EventosController {
 		return service.listarEventosPorPeriodo(converterStringParaDate(dataInicial), converterStringParaDate(dataFinal));
 	}
 	
+	public List<Regional> listarRegionais() {
+		RegionalService service = new RegionalService(getSessionFactory());
+		return service.listar();
+	}
+	
+	public List<Instituto> listarInstitutos() {
+		InstitutoService service = new InstitutoService(getSessionFactory());
+		return service.listar();
+	}
+	
+	public List<Categoria> listarCategorias() {
+		CategoriaService service = new CategoriaService(getSessionFactory());
+		return service.listar();
+	}
+	
+	public List<Evento> listarPorInstituto(int codigoInstituto) {
+		EventoService service = new EventoService(getSessionFactory());
+		return service.listarPorInstituto(codigoInstituto);
+	}
+
+	public List<Evento> listarPorCategoria(int codigoCategoria) {
+		EventoService service = new EventoService(getSessionFactory());
+		return service.listarPorCategoria(codigoCategoria);
+	}
+
+	public List<Evento> listarPorRegional(int codigoRegional) {
+		EventoService service = new EventoService(getSessionFactory());
+		return service.listarPorRegional(codigoRegional);
+	}
+
 	public SessionFactory getSessionFactory() {
 		return sessionFactory;
 	}
@@ -94,6 +148,4 @@ public class EventosController {
 	public void setTela(TelaEventoConsole tela) {
 		this.tela = tela;
 	}
-
-
 }

@@ -86,6 +86,7 @@ public class TesteCategoria {
 		List<Categoria> categorias = service.listar("Feriado");
 		
 		boolean result = categorias.stream().anyMatch(x->x.getNome().equals("Feriado"));
+		result = false;
 		Assert.assertTrue(result);
 	}
 	
